@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">SC</string>
+    <string name="dialog_normal_content">我是普通dialog</string>
+    <string name="dialog_normal_more_button_content">我是普通多按钮dialog</string>
+    <string name="dialog_btn_confirm_text">确定</string>
+    <string name="dialog_btn_cancel_text">取消</string>
+    <string name="dialog_btn_neutral_text">忽略</string>
+    <string name="dialog_btn_confirm_hint_text">您点击了确定按钮</string>
+    <string name="dialog_btn_cancel_hint_text">您点击了取消按钮</string>
+    <string name="dialog_btn_neutral_hint_text">您点击了忽略按钮</string>
+
 </resources>

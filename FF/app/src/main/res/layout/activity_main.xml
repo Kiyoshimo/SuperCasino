@@ -94,7 +94,7 @@
         app:layout_constraintEnd_toStartOf="@+id/iv_cc2"
         app:layout_constraintTop_toTopOf="@+id/iv_cc2"
         app:srcCompat="@drawable/jb"
-        tools:srcCompat="@drawable/jb" />
+        tools:srcCompat="@drawable/c1" />
 
     <ImageView
         android:id="@+id/iv_cc2"
