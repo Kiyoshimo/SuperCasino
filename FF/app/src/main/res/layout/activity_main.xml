@@ -8,6 +8,51 @@
     tools:context=".MainActivity">
 
     <TextView
+        android:id="@+id/tv_tm5"
+        android:layout_width="42dp"
+        android:layout_height="17dp"
+        android:layout_marginTop="8dp"
+        android:text="500元"
+        app:layout_constraintEnd_toEndOf="@+id/tv_tm6"
+        app:layout_constraintStart_toStartOf="@+id/tv_tm6"
+        app:layout_constraintTop_toBottomOf="@+id/tv_tm6" />
+
+    <TextView
+        android:id="@+id/tv_tm6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="本局投资："
+        app:layout_constraintBottom_toBottomOf="@+id/iv_h2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.509"
+        app:layout_constraintStart_toEndOf="@+id/iv_h2"
+        app:layout_constraintTop_toTopOf="@+id/iv_h2" />
+
+    <TextView
+        android:id="@+id/tv_tm4"
+        android:layout_width="42dp"
+        android:layout_height="17dp"
+        android:layout_marginTop="8dp"
+        android:text="1500元"
+        app:layout_constraintEnd_toEndOf="@+id/tv_tm3"
+        app:layout_constraintStart_toStartOf="@+id/tv_tm3"
+        app:layout_constraintTop_toBottomOf="@+id/tv_tm3" />
+
+    <TextView
+        android:id="@+id/tv_tm3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="玩家资产："
+        app:layout_constraintBottom_toBottomOf="@+id/iv_h1"
+        app:layout_constraintEnd_toStartOf="@+id/iv_h1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/iv_h1" />
+
+    <TextView
         android:id="@+id/tv_tm2"
         android:layout_width="42dp"
         android:layout_height="17dp"
@@ -22,18 +67,18 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="56dp"
-        android:text="加注"
-        app:layout_constraintStart_toEndOf="@+id/b_call"
-        app:layout_constraintTop_toTopOf="@+id/b_call" />
+        android:text="下注raise"
+        app:layout_constraintStart_toEndOf="@+id/b_check"
+        app:layout_constraintTop_toTopOf="@+id/b_check" />
 
     <Button
-        android:id="@+id/b_call"
+        android:id="@+id/b_check"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:text="跟注"
+        android:text="看牌check"
         app:layout_constraintBottom_toTopOf="@+id/iv_h1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.499"
@@ -112,7 +157,7 @@
         android:layout_marginBottom="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/iv_cc5"
-        app:srcCompat="@drawable/jb"
+        app:srcCompat="@drawable/c1"
         tools:srcCompat="@drawable/jb" />
 
     <ImageView
@@ -123,7 +168,7 @@
         android:layout_marginBottom="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/iv_cc4"
-        app:srcCompat="@drawable/jb"
+        app:srcCompat="@drawable/s1"
         tools:srcCompat="@drawable/jb" />
 
     <ImageView
@@ -147,9 +192,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="56dp"
-        android:text="弃牌"
-        app:layout_constraintEnd_toStartOf="@+id/b_call"
-        app:layout_constraintTop_toTopOf="@+id/b_call" />
+        android:text="弃牌fold"
+        app:layout_constraintEnd_toStartOf="@+id/b_check"
+        app:layout_constraintTop_toTopOf="@+id/b_check" />
 
     <TextView
         android:id="@+id/tv_tm1"
