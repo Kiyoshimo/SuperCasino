@@ -1,7 +1,5 @@
 package com.example.azk.sc;
 
-import android.content.DialogInterface;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -46,11 +44,19 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    //下注按钮Raise[android:onClick="ButtonRaise"]
+    //下注按钮ButtonRaise[android:onClick="ButtonRaise"]
     public void ButtonRaise(View view) {
         ButtonRaise MyButtonRaise=new ButtonRaise();
         MyButtonRaise.getContext(this);
         MyButtonRaise.showNormalDialog();
+    }
+    //弃牌按钮ButtonFold[android:onClick="ButtonRaise"]
+    public void ButtonFold(View view) {
+        ButtonFold MyButtonFold=new ButtonFold();
+    }
+    //弃牌按钮ButtonCheck[android:onClick="ButtonRaise"]
+    public void ButtonCheck(View view) {
+        ButtonCheck MyButtonCheck=new ButtonCheck();
     }
 
 
