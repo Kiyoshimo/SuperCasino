@@ -4,48 +4,57 @@ import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
+
 
 public class MainActivity extends AppCompatActivity {
+    private Button btnFold,btnCheck,btnRaise;
+    private ImageView ivCC1,ivCC2,ivCC3,ivCC4,ivCC5,ivHC1,ivHC2 ;
+    private TextView tv1,tv2,tv3;
 
-    private ButtonRaise MyButtonRaise;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        MyButtonRaise = new ButtonRaise();
-        MyButtonRaise.showNormalDialog();
-        //showNormalDialog();
+        init();
     }
 
-//        public void showNormalDialog(){
-//            /* @setIcon 设置对话框图标
-//             * @setTitle 设置对话框标题
-//             * @setMessage 设置对话框消息提示
-//             * setXXX方法返回Dialog对象，因此可以链式设置属性
-//             */
-//            final AlertDialog.Builder normalDialog =
-//                    new AlertDialog.Builder(MainActivity.this);
-//            //normalDialog.setIcon(R.drawable.icon_dialog);
-//            normalDialog.setTitle("我是一个普通Dialog");
-//            normalDialog.setMessage("你要点击哪一个按钮呢?");
-//            normalDialog.setPositiveButton("确定",
-//                    new DialogInterface.OnClickListener() {
-//                        @Override
-//                        public void onClick(DialogInterface dialog, int which) {
-//                            //...To-do
-//                        }
-//                    });
-//            normalDialog.setNegativeButton("关闭",
-//                    new DialogInterface.OnClickListener() {
-//                        @Override
-//                        public void onClick(DialogInterface dialog, int which) {
-//                            //...To-do
-//                        }
-//                    });
-//            // 显示
-//            normalDialog.show();
-//        }
-//
+    //初始化
+    protected void  init(){
+        //按钮们
+        btnFold= (Button) findViewById(R.id.b_fold);
+        btnRaise= (Button) findViewById(R.id.b_raise);
+        btnCheck= (Button) findViewById(R.id.b_check);
+        //扑克图片们
+        ivCC1=(ImageView)findViewById(R.id.iv_cc1);
+        ivCC2=(ImageView)findViewById(R.id.iv_cc2);
+        ivCC3=(ImageView)findViewById(R.id.iv_cc3);
+        ivCC4=(ImageView)findViewById(R.id.iv_cc4);
+        ivCC5=(ImageView)findViewById(R.id.iv_cc5);
+        ivHC1=(ImageView)findViewById(R.id.iv_h1);
+        ivHC2=(ImageView)findViewById(R.id.iv_h2);
+        //资金数据TextView们
+        tv1=(TextView) findViewById(R.id.tv_tm2);
+        tv2=(TextView) findViewById(R.id.tv_tm4);
+        tv3=(TextView) findViewById(R.id.tv_tm5);
+
+    }
+
+
+    //下注按钮Raise[android:onClick="ButtonRaise"]
+    public void ButtonRaise(View view) {
+        ButtonRaise MyButtonRaise=new ButtonRaise();
+        MyButtonRaise.getContext(this);
+        MyButtonRaise.showNormalDialog();
+    }
+
+
+
     }
 
 

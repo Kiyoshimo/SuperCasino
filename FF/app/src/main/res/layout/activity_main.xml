@@ -67,6 +67,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="56dp"
+        android:onClick="ButtonRaise"
         android:text="下注raise"
         app:layout_constraintStart_toEndOf="@+id/b_check"
         app:layout_constraintTop_toTopOf="@+id/b_check" />
