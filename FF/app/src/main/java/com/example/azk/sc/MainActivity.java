@@ -9,16 +9,22 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-
+/*  Version: 0.4.0
+* 判斷牌型功能完成
+* 但重複遊玩約六到八局會閃退
+* 問題出在某些數值未重置，待解決
+* */
 public class MainActivity extends AppCompatActivity {
     private Button btnFold,btnCheck,btnRaise;
     private ImageView ivCC1,ivCC2,ivCC3,ivCC4,ivCC5,ivHC1,ivHC2 ;
     private TextView tv1,tv2,tv3;
-    private TextView tvTurn, tvCheck;
+    private TextView tvTurn, tvCheck, tvCardType;
     private DeckController deckController;
     private int turn_number;
     private boolean all_check;
     private ArrayList<String> playerCard;
+    ArrayList<String> ccCard;
+    CardTypeDiscriminator ctd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,19 +54,25 @@ public class MainActivity extends AppCompatActivity {
         //其餘TextView們
         tvTurn = (TextView) findViewById(R.id.tv_turn);
         tvCheck = (TextView) findViewById(R.id.tv_check);
+        tvCardType = (TextView) findViewById(R.id.tv_cardtype);
         //牌組控制器
         deckController = new DeckController();
         playerCard = new ArrayList<>();
-        resetGame();
+        ccCard = new ArrayList<>();
+        ctd = new CardTypeDiscriminator();
+        resetGame(0);
     }
 
-    public void resetGame(){
+    public void resetGame(int c){
         int imageResource = getResources().getIdentifier("@drawable/jb", null, getPackageName());
         ivCC1.setImageResource(imageResource);
         ivCC2.setImageResource(imageResource);
         ivCC3.setImageResource(imageResource);
         ivCC4.setImageResource(imageResource);
         ivCC5.setImageResource(imageResource);
+        ccCard.clear();
+        playerCard.clear();
+        deckController.resetDeck();
         String p1Card = deckController.drawCard();
         String connect = "@drawable/" + p1Card;
         imageResource = getResources().getIdentifier(connect, null, getPackageName());
@@ -75,6 +87,8 @@ public class MainActivity extends AppCompatActivity {
         tvCheck.setText(String.valueOf(all_check));
         playerCard.add(p1Card);
         playerCard.add(p2Card);
+        ctd.resetDiscriminator(c);
+        tvCardType.setText("");
     }
 
     //下注按钮ButtonRaise[android:onClick="ButtonRaise"]
@@ -82,21 +96,23 @@ public class MainActivity extends AppCompatActivity {
         ButtonRaise MyButtonRaise=new ButtonRaise();
         //MyButtonRaise.getContext(this);
         //MyButtonRaise.showNormalDialog();
-        turn_number += 1;
-        all_check = true;
+        if(!all_check) {
+            turn_number += 1;
+            all_check = true;
+        }
         tvCheck.setText(String.valueOf(all_check));
     }
     //弃牌按钮ButtonFold[android:onClick="ButtonRaise"]
     public void ButtonFold(View view) {
         ButtonFold MyButtonFold=new ButtonFold();
         deckController.resetDeck();
-        resetGame();
+        resetGame(1);
     }
     //弃牌按钮ButtonCheck[android:onClick="ButtonRaise"]
     public void ButtonCheck(View view) {
         ButtonCheck MyButtonCheck=new ButtonCheck();
         String cc1Card, cc2Card, cc3Card, cc4Card, cc5Card;
-        ArrayList<String> ccCard = new ArrayList<>();
+
         if(all_check) {
             if (turn_number == 1) {
                 cc1Card = deckController.drawCard();
@@ -126,10 +142,11 @@ public class MainActivity extends AppCompatActivity {
                 int imageResource = getResources().getIdentifier(connect, null, getPackageName());
                 ivCC5.setImageResource(imageResource);
                 ccCard.add(cc5Card);
-                CardTypeDiscriminator ctd = new CardTypeDiscriminator(ccCard,playerCard);
-
+                ctd.setCard(ccCard,playerCard);
+                String result = ctd.discriminate();
+                tvCardType.setText(result);
             } else {
-                resetGame();
+                resetGame(2);
             }
         }
         all_check = false;
