@@ -50,11 +50,11 @@ public class MainActivity extends AppCompatActivity {
         MyButtonRaise.getContext(this);
         MyButtonRaise.showNormalDialog();
     }
-    //弃牌按钮ButtonFold[android:onClick="ButtonRaise"]
+    //弃牌按钮ButtonFold[android:onClick="ButtonFold"]
     public void ButtonFold(View view) {
         ButtonFold MyButtonFold=new ButtonFold();
     }
-    //弃牌按钮ButtonCheck[android:onClick="ButtonRaise"]
+    //看牌按钮ButtonCheck[android:onClick="ButtonCheck"]
     public void ButtonCheck(View view) {
         ButtonCheck MyButtonCheck=new ButtonCheck();
     }

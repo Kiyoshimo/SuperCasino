@@ -17,7 +17,8 @@ public class ButtonRaise{
 
     public void getContext(Context bContext){
         brContext=bContext;
-    }
+    }//要把那个啥穿进去
+
     public void showNormalDialog(){
         // 创建对话框构建器
         AlertDialog.Builder builder = new AlertDialog.Builder(brContext);
@@ -25,22 +26,40 @@ public class ButtonRaise{
         View view2 = View.inflate(brContext, R.layout.activity_raise_seekbar, null);
         // 获取布局中的控件
         final SeekBar sb = (SeekBar) view2.findViewById(R.id.sb_raise);
-        final TextView tv = (TextView) view2.findViewById(R.id.tv_raise_sb);
+        final TextView tv1 = (TextView) view2.findViewById(R.id.tv_raise_sb1);
+        final TextView tv2 = (TextView) view2.findViewById(R.id.tv_raise_sb2);
+        final TextView tv3 = (TextView) view2.findViewById(R.id.tv_raise_sb3);
         final Button btn = (Button) view2.findViewById(R.id.btn_raise_sb);
         // 设置参数
         builder.setTitle("下注").setView(view2);
+        btn.setText("下注"+2+"元" );
         // 创建对话框
         final AlertDialog alertDialog = builder.create();
+
+        //SeekBar监听
+        sb.setOnSeekBarChangeListener( new SeekBar.OnSeekBarChangeListener(){
+            //停止拖曳時觸發事件
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar){}
+            //開始拖曳時觸發事件
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar){}
+            //拖曳途中觸發事件，回傳參數 progress 告知目前拖曳數值
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser)
+            {btn.setText("下注"+progress+"元" );}
+        });
+
+        //按钮监听
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO Auto-generated method stub
-                //String uname = username.getText().toString().trim();
                 Toast.makeText(brContext, "下注！", Toast.LENGTH_SHORT).show();
                 alertDialog.dismiss();// 对话框消失
             }
-
         });
+
+
         alertDialog.show();
     }
 }
