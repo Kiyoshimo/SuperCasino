@@ -14,7 +14,8 @@ import android.widget.Toast;
 public class ButtonRaise{
 
     public Context brContext;
-
+    public int M;
+    public boolean btnS;
     public void getContext(Context bContext){
         brContext=bContext;
     }//要把那个啥穿进去
@@ -33,6 +34,7 @@ public class ButtonRaise{
         // 设置参数
         builder.setTitle("下注").setView(view2);
         btn.setText("下注"+2+"元" );
+        btnS=false;
         // 创建对话框
         final AlertDialog alertDialog = builder.create();
 
@@ -47,7 +49,7 @@ public class ButtonRaise{
             //拖曳途中觸發事件，回傳參數 progress 告知目前拖曳數值
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser)
-            {btn.setText("下注"+progress+"元" );}
+            {M=progress;btn.setText("下注"+M+"元" );}
         });
 
         //按钮监听
@@ -55,6 +57,7 @@ public class ButtonRaise{
             @Override
             public void onClick(View v) {
                 Toast.makeText(brContext, "下注！", Toast.LENGTH_SHORT).show();
+                btnS=true;
                 alertDialog.dismiss();// 对话框消失
             }
         });
@@ -62,4 +65,8 @@ public class ButtonRaise{
 
         alertDialog.show();
     }
+
+    public boolean showBtnS(){return btnS;}
+
+
 }

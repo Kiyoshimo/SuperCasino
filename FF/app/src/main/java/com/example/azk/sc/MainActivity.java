@@ -96,11 +96,15 @@ public class MainActivity extends AppCompatActivity {
         ButtonRaise MyButtonRaise=new ButtonRaise();
         //MyButtonRaise.getContext(this);
         //MyButtonRaise.showNormalDialog();
+        //if(MyButtonRaise.showBtnS()) { }
         if(!all_check) {
-            turn_number += 1;
-            all_check = true;
+
+                turn_number += 1;
+                all_check = true;
+
         }
         tvCheck.setText(String.valueOf(all_check));
+
     }
     //弃牌按钮ButtonFold[android:onClick="ButtonFold"]
     public void ButtonFold(View view) {
