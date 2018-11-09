@@ -93,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
 
     //下注按钮ButtonRaise[android:onClick="ButtonRaise"]
     public void ButtonRaise(View view) {
-        ButtonRaise MyButtonRaise=new ButtonRaise();
+        //ButtonRaise MyButtonRaise=new ButtonRaise();
         //MyButtonRaise.getContext(this);
         //MyButtonRaise.showNormalDialog();
         //if(MyButtonRaise.showBtnS()) { }
@@ -108,22 +108,22 @@ public class MainActivity extends AppCompatActivity {
     }
     //弃牌按钮ButtonFold[android:onClick="ButtonFold"]
     public void ButtonFold(View view) {
-        ButtonFold MyButtonFold=new ButtonFold();
+        //ButtonFold MyButtonFold=new ButtonFold();
         deckController.resetDeck();
         resetGame(1);
     }
     //看牌按钮ButtonCheck[android:onClick="ButtonCheck"]
     public void ButtonCheck(View view) {
-        ButtonCheck MyButtonCheck=new ButtonCheck();
+        //ButtonCheck MyButtonCheck=new ButtonCheck();
         String cc1Card, cc2Card, cc3Card, cc4Card, cc5Card;
-
+        int imageResource;
         if(all_check) {
             if (turn_number == 1) {
                 cc1Card = deckController.drawCard();
                 cc2Card = deckController.drawCard();
                 cc3Card = deckController.drawCard();
                 String connect = "@drawable/" + cc1Card;
-                int imageResource = getResources().getIdentifier(connect, null, getPackageName());
+                imageResource = getResources().getIdentifier(connect, null, getPackageName());
                 ivCC1.setImageResource(imageResource);
                 connect = "@drawable/" + cc2Card;
                 imageResource = getResources().getIdentifier(connect, null, getPackageName());
@@ -137,13 +137,13 @@ public class MainActivity extends AppCompatActivity {
             } else if (turn_number == 2) {
                 cc4Card = deckController.drawCard();
                 String connect = "@drawable/" + cc4Card;
-                int imageResource = getResources().getIdentifier(connect, null, getPackageName());
+                imageResource = getResources().getIdentifier(connect, null, getPackageName());
                 ivCC4.setImageResource(imageResource);
                 ccCard.add(cc4Card);
             } else if (turn_number == 3) {
                 cc5Card = deckController.drawCard();
                 String connect = "@drawable/" + cc5Card;
-                int imageResource = getResources().getIdentifier(connect, null, getPackageName());
+                imageResource = getResources().getIdentifier(connect, null, getPackageName());
                 ivCC5.setImageResource(imageResource);
                 ccCard.add(cc5Card);
                 ctd.setCard(ccCard,playerCard);
