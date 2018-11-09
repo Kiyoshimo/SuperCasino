@@ -64,16 +64,17 @@ public class CardTypeDiscriminator {
         //若大於等於五張牌花色相同，則定義為同花
         for(int j = 0; j < 4; j++){
             if(color_num[j] >= 5){
+                if(number_num[9] == 1 && number_num[10] == 1 && number_num[11] == 1
+                        && number_num[12] == 1 && number_num[0] == 1) {
+                    return "皇家同花順(Royal Straight Flush)";
+                }
                 for(int k = 0; k < 9; k++){
                     if(number_num[k] == 1 && number_num[k+1] == 1 && number_num[k+2] == 1
                             && number_num[k+3] == 1 && number_num[k+4] == 1){
                         return "同花順(Straight Flush)";
                     }
                 }
-                if(number_num[9] == 1 && number_num[10] == 1 && number_num[11] == 1
-                        && number_num[12] == 1 && number_num[0] == 1) {
-                    return "皇家同花順(Royal Straight Flush)";
-                }
+                return "同花(Flush)";
             }
         }
         //再來將牌的數字排序整理，判斷其餘牌型
@@ -103,13 +104,13 @@ public class CardTypeDiscriminator {
                 return "三條(Triple)";
             }
         }else{
-            if(number_num[9] == 1 && number_num[10] == 1 && number_num[11] == 1
-                    && number_num[12] == 1 && number_num[0] == 1) {
+            if(number_num[9] >= 1 && number_num[10] >= 1 && number_num[11] >= 1
+                    && number_num[12] >= 1 && number_num[0] >= 1) {
                 return "順子(Straight)";
             }
             for(int k = 0; k < 9; k++){
-                if(number_num[k] == 1 && number_num[k+1] == 1 && number_num[k+2] == 1
-                        && number_num[k+3] == 1 && number_num[k+4] == 1){
+                if(number_num[k] >= 1 && number_num[k+1] >= 1 && number_num[k+2] >= 1
+                        && number_num[k+3] >= 1 && number_num[k+4] >= 1){
                     return "順子(Straight)";
                 }
             }

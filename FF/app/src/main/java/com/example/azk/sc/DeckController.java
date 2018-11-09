@@ -24,6 +24,6 @@ public class DeckController {
         return result;
     }
     public void resetDeck(){
-        deck = cardGroup;
+        deck = cardGroup.clone();
     }
 }
