@@ -8,7 +8,7 @@
     tools:context=".MainActivity">
 
     <TextView
-        android:id="@+id/tv_tm5"
+        android:id="@+id/tv_tmm"
         android:layout_width="42dp"
         android:layout_height="17dp"
         android:layout_marginTop="8dp"
@@ -31,7 +31,7 @@
         app:layout_constraintTop_toTopOf="@+id/iv_h2" />
 
     <TextView
-        android:id="@+id/tv_tm4"
+        android:id="@+id/tv_mm"
         android:layout_width="42dp"
         android:layout_height="17dp"
         android:layout_marginTop="8dp"
@@ -53,7 +53,7 @@
         app:layout_constraintTop_toTopOf="@+id/iv_h1" />
 
     <TextView
-        android:id="@+id/tv_tm2"
+        android:id="@+id/tv_tam"
         android:layout_width="42dp"
         android:layout_height="17dp"
         android:layout_marginTop="8dp"

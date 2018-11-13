@@ -11,16 +11,23 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class ButtonRaise{
+public class ButtonRaise {
 
     public Context brContext;
     public int M;
     public boolean btnS;
-    public void getContext(Context bContext){
-        brContext=bContext;
-    }//要把那个啥穿进去
 
-    public void showNormalDialog(){
+    //要把那个啥穿进去
+    public void getContext(Context bContext) {
+        brContext = bContext;
+    }
+    //送出按钮状态
+    public boolean showBtnS() {
+        Toast.makeText(brContext, "now:" + String.valueOf(btnS), Toast.LENGTH_SHORT).show();
+        return btnS;
+    }
+
+    public void showNormalDialog() {
         // 创建对话框构建器
         AlertDialog.Builder builder = new AlertDialog.Builder(brContext);
         // 获取布局
@@ -33,40 +40,50 @@ public class ButtonRaise{
         final Button btn = (Button) view2.findViewById(R.id.btn_raise_sb);
         // 设置参数
         builder.setTitle("下注").setView(view2);
-        btn.setText("下注"+2+"元" );
-        btnS=false;
+        btn.setText("跟注");
+
         // 创建对话框
         final AlertDialog alertDialog = builder.create();
 
         //SeekBar监听
-        sb.setOnSeekBarChangeListener( new SeekBar.OnSeekBarChangeListener(){
+        sb.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             //停止拖曳時觸發事件
             @Override
-            public void onStopTrackingTouch(SeekBar seekBar){}
+            public void onStopTrackingTouch(SeekBar seekBar) {
+            }
+
             //開始拖曳時觸發事件
             @Override
-            public void onStartTrackingTouch(SeekBar seekBar){}
+            public void onStartTrackingTouch(SeekBar seekBar) {
+            }
+
             //拖曳途中觸發事件，回傳參數 progress 告知目前拖曳數值
             @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser)
-            {M=progress;btn.setText("下注"+M+"元" );}
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                M = progress;
+                if (M == 2) btn.setText("跟注");
+                else if (M == 200) btn.setText("ALL IN！");
+                else btn.setText("下注" + M + "元");
+            }
         });
 
         //按钮监听
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(brContext, "下注！", Toast.LENGTH_SHORT).show();
-                btnS=true;
+                btnS = true;
+                Toast.makeText(brContext, "下注！" + String.valueOf(btnS), Toast.LENGTH_SHORT).show();
                 alertDialog.dismiss();// 对话框消失
             }
         });
 
 
         alertDialog.show();
+
+
     }
-
-    public boolean showBtnS(){return btnS;}
-
-
 }
+
+
+
+

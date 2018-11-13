@@ -9,23 +9,24 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-/*  Version: 0.4.0
-* 判斷牌型功能完成
-* 但重複遊玩約六到八局會閃退
-* 問題出在某些數值未重置，待解決
-* */
+
 public class MainActivity extends AppCompatActivity {
     private Button btnFold,btnCheck,btnRaise;
     private ImageView ivCC1,ivCC2,ivCC3,ivCC4,ivCC5,ivHC1,ivHC2 ;
-    private TextView tv1,tv2,tv3;
+    private TextView tvMm,tvTmm,tvTam;
     private TextView tvTurn, tvCheck, tvCardType;
+
+
     private DeckController deckController;
     private int turn_number;
     private boolean all_check;
     private ArrayList<String> playerCard;
+
     ArrayList<String> ccCard;
     CardTypeDiscriminator ctd;
 
+    public wallet playerWallet;//玩家钱包
+    public  int bonusPool;//每轮奖金池
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,9 +49,9 @@ public class MainActivity extends AppCompatActivity {
         ivHC1=(ImageView)findViewById(R.id.iv_h1);
         ivHC2=(ImageView)findViewById(R.id.iv_h2);
         //资金数据TextView们
-        tv1=(TextView) findViewById(R.id.tv_tm2);
-        tv2=(TextView) findViewById(R.id.tv_tm4);
-        tv3=(TextView) findViewById(R.id.tv_tm5);
+        tvMm=(TextView) findViewById(R.id.tv_mm);
+        tvTmm=(TextView) findViewById(R.id.tv_tmm);
+        tvTam=(TextView) findViewById(R.id.tv_tam);
         //其餘TextView們
         tvTurn = (TextView) findViewById(R.id.tv_turn);
         tvCheck = (TextView) findViewById(R.id.tv_check);
@@ -61,6 +62,12 @@ public class MainActivity extends AppCompatActivity {
         ccCard = new ArrayList<>();
         ctd = new CardTypeDiscriminator();
         resetGame(0);
+
+        playerWallet=new wallet();
+        playerWallet.creatWallet(this);
+        bonusPool=0;
+
+
     }
 
     public void resetGame(int c){
@@ -89,26 +96,37 @@ public class MainActivity extends AppCompatActivity {
         playerCard.add(p2Card);
         ctd.resetDiscriminator(c);
         tvCardType.setText("");
+
+        //金钱初始化
+        bonusPool=0;
+        tvTam.setText(String.valueOf(bonusPool));
     }
 
     //下注按钮ButtonRaise[android:onClick="ButtonRaise"]
     public void ButtonRaise(View view) {
-        //ButtonRaise MyButtonRaise=new ButtonRaise();
-        //MyButtonRaise.getContext(this);
-        //MyButtonRaise.showNormalDialog();
-        //if(MyButtonRaise.showBtnS()) { }
-        if(!all_check) {
-
+        ButtonRaise MyButtonRaise=new ButtonRaise();
+        MyButtonRaise.getContext(this);
+         MyButtonRaise.showNormalDialog();
+        //boolean tmp = MyButtonRaise.showBtnS();
+        if(!all_check  )  {
                 turn_number += 1;
                 all_check = true;
-
+                tvCheck.setText(String.valueOf(all_check));
         }
-        tvCheck.setText(String.valueOf(all_check));
+
+        playerWallet.bet(10);//下注十块，测试用
+        bonusPool=bonusPool+10;
+        //playerWallet.bet(MyButtonRaise.M);//下注十块，测试用
+        //bonusPool=bonusPool+MyButtonRaise.M;
+        tvTam.setText(String.valueOf(bonusPool)+"元");
+        tvTmm.setText(String.valueOf(playerWallet.turnMyBetMoney)+"元");
+        tvMm.setText(String.valueOf(playerWallet.walletMoney)+"元");
+
 
     }
     //弃牌按钮ButtonFold[android:onClick="ButtonFold"]
     public void ButtonFold(View view) {
-        //ButtonFold MyButtonFold=new ButtonFold();
+        ButtonFold MyButtonFold=new ButtonFold();
         deckController.resetDeck();
         resetGame(1);
     }
@@ -150,6 +168,7 @@ public class MainActivity extends AppCompatActivity {
                 String result = ctd.discriminate();
                 tvCardType.setText(result);
             } else {
+               playerWallet.winOrLose(bonusPool,true);//输赢
                 resetGame(2);
             }
         }
