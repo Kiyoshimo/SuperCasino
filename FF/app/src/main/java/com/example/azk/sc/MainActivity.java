@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -14,12 +15,12 @@ public class MainActivity extends AppCompatActivity {
     private Button btnFold,btnCheck,btnRaise;
     private ImageView ivCC1,ivCC2,ivCC3,ivCC4,ivCC5,ivHC1,ivHC2 ;
     private TextView tvMm,tvTmm,tvTam;
-    private TextView tvTurn, tvCheck, tvCardType;
+    private TextView tvTurn, tvCheck, tvCardType, tvChange;
 
 
     private DeckController deckController;
     private int turn_number;
-    private boolean all_check;
+    private boolean all_check, result_flag;
     private ArrayList<String> playerCard;
 
     ArrayList<String> ccCard;
@@ -52,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
         tvMm=(TextView) findViewById(R.id.tv_mm);
         tvTmm=(TextView) findViewById(R.id.tv_tmm);
         tvTam=(TextView) findViewById(R.id.tv_tam);
+        tvChange = (TextView) findViewById(R.id.tv_change);     //當局資金變化
         //其餘TextView們
         tvTurn = (TextView) findViewById(R.id.tv_turn);
         tvCheck = (TextView) findViewById(R.id.tv_check);
@@ -61,16 +63,16 @@ public class MainActivity extends AppCompatActivity {
         playerCard = new ArrayList<>();
         ccCard = new ArrayList<>();
         ctd = new CardTypeDiscriminator();
-        resetGame(0);
-
+        //錢包
         playerWallet=new wallet();
         playerWallet.creatWallet(this);
         bonusPool=0;
-
+        result_flag = false;
+        resetGame();
 
     }
 
-    public void resetGame(int c){
+    public void resetGame(){
         int imageResource = getResources().getIdentifier("@drawable/jb", null, getPackageName());
         ivCC1.setImageResource(imageResource);
         ivCC2.setImageResource(imageResource);
@@ -94,12 +96,14 @@ public class MainActivity extends AppCompatActivity {
         tvCheck.setText(String.valueOf(all_check));
         playerCard.add(p1Card);
         playerCard.add(p2Card);
-        ctd.resetDiscriminator(c);
+        ctd.resetDiscriminator();
         tvCardType.setText("");
 
         //金钱初始化
         bonusPool=0;
         tvTam.setText(String.valueOf(bonusPool));
+        tvTmm.setText(String.valueOf(playerWallet.turnMyBetMoney)+"元");
+        tvMm.setText(String.valueOf(playerWallet.walletMoney)+"元");
     }
 
     //下注按钮ButtonRaise[android:onClick="ButtonRaise"]
@@ -108,35 +112,100 @@ public class MainActivity extends AppCompatActivity {
         MyButtonRaise.getContext(this);
          MyButtonRaise.showNormalDialog();
         //boolean tmp = MyButtonRaise.showBtnS();
-        if(!all_check  )  {
+        if(!all_check)  {
                 turn_number += 1;
                 all_check = true;
                 tvCheck.setText(String.valueOf(all_check));
+            if(turn_number <= 3) {
+                playerWallet.bet(10);//下注十块，测试用
+                bonusPool = bonusPool + 10;
+            }
         }
-
-        playerWallet.bet(10);//下注十块，测试用
-        bonusPool=bonusPool+10;
+        if(all_check) {
+            if (turn_number == 1) {
+                tvChange.setText("0");
+                turnStart(1);
+            } else if (turn_number == 2) {
+                turnStart(2);
+            } else if (turn_number == 3) {
+                turnStart(3);
+                tvTam.setText(String.valueOf(bonusPool) + "元");
+                tvTmm.setText(String.valueOf(playerWallet.turnMyBetMoney) + "元");
+                tvMm.setText(String.valueOf(playerWallet.walletMoney) + "元");
+                //最後一輪翻牌後即判斷勝負，錢也在此計算
+                result_flag = true;
+                playerWallet.winOrLose(bonusPool,result_flag);//输赢
+                if(result_flag)
+                    tvChange.setText("+" + String.valueOf(bonusPool));
+                else
+                    tvChange.setText("-" + String.valueOf(bonusPool));
+            } else {
+                tvChange.setText("0");
+                resetGame();
+            }
+        }
+        all_check = false;
+        tvTurn.setText(String.valueOf(turn_number));
+        tvCheck.setText(String.valueOf(all_check));
         //playerWallet.bet(MyButtonRaise.M);//下注十块，测试用
         //bonusPool=bonusPool+MyButtonRaise.M;
-        tvTam.setText(String.valueOf(bonusPool)+"元");
-        tvTmm.setText(String.valueOf(playerWallet.turnMyBetMoney)+"元");
-        tvMm.setText(String.valueOf(playerWallet.walletMoney)+"元");
-
-
+        if(turn_number != 3) {
+            tvTam.setText(String.valueOf(bonusPool) + "元");
+            tvTmm.setText(String.valueOf(playerWallet.turnMyBetMoney) + "元");
+            tvMm.setText(String.valueOf(playerWallet.walletMoney) + "元");
+        }
     }
     //弃牌按钮ButtonFold[android:onClick="ButtonFold"]
     public void ButtonFold(View view) {
         ButtonFold MyButtonFold=new ButtonFold();
         deckController.resetDeck();
-        resetGame(1);
+        if(turn_number < 3) {
+            result_flag = false;
+            tvChange.setText("-" + String.valueOf(bonusPool));
+            playerWallet.winOrLose(bonusPool, result_flag);
+        }else{
+            tvChange.setText("0");
+        }
+        resetGame();
     }
     //看牌按钮ButtonCheck[android:onClick="ButtonCheck"]
     public void ButtonCheck(View view) {
         //ButtonCheck MyButtonCheck=new ButtonCheck();
-        String cc1Card, cc2Card, cc3Card, cc4Card, cc5Card;
-        int imageResource;
+        //String cc1Card, cc2Card, cc3Card, cc4Card, cc5Card;
+        //int imageResource;
+        if(!all_check){
+            turn_number += 1;
+            all_check = true;
+        }
         if(all_check) {
             if (turn_number == 1) {
+                tvChange.setText("0");
+                turnStart(1);
+            } else if (turn_number == 2) {
+                turnStart(2);
+            } else if (turn_number == 3) {
+                turnStart(3);
+                //最後一輪翻牌後即判斷勝負，錢也在此計算
+                result_flag = true;
+                playerWallet.winOrLose(bonusPool,result_flag);//输赢
+                if(result_flag)
+                    tvChange.setText("+" + String.valueOf(bonusPool));
+                else
+                    tvChange.setText("-" + String.valueOf(bonusPool));
+            } else {
+                tvChange.setText("0");
+                resetGame();
+            }
+        }
+        all_check = false;
+        tvTurn.setText(String.valueOf(turn_number));
+        tvCheck.setText(String.valueOf(all_check));
+        }
+
+        public void turnStart(int tn){
+            int imageResource;
+            if(tn == 1){
+                String cc1Card, cc2Card, cc3Card;
                 cc1Card = deckController.drawCard();
                 cc2Card = deckController.drawCard();
                 cc3Card = deckController.drawCard();
@@ -152,13 +221,15 @@ public class MainActivity extends AppCompatActivity {
                 ccCard.add(cc1Card);
                 ccCard.add(cc2Card);
                 ccCard.add(cc3Card);
-            } else if (turn_number == 2) {
+            }else if(tn == 2){
+                String cc4Card;
                 cc4Card = deckController.drawCard();
                 String connect = "@drawable/" + cc4Card;
                 imageResource = getResources().getIdentifier(connect, null, getPackageName());
                 ivCC4.setImageResource(imageResource);
                 ccCard.add(cc4Card);
-            } else if (turn_number == 3) {
+            }else if(tn == 3){
+                String cc5Card;
                 cc5Card = deckController.drawCard();
                 String connect = "@drawable/" + cc5Card;
                 imageResource = getResources().getIdentifier(connect, null, getPackageName());
@@ -167,16 +238,10 @@ public class MainActivity extends AppCompatActivity {
                 ctd.setCard(ccCard,playerCard);
                 String result = ctd.discriminate();
                 tvCardType.setText(result);
-            } else {
-               playerWallet.winOrLose(bonusPool,true);//输赢
-                resetGame(2);
+            }else{
+
             }
         }
-        all_check = false;
-        tvTurn.setText(String.valueOf(turn_number));
-        tvCheck.setText(String.valueOf(all_check));
-    }
-
     }
 
 

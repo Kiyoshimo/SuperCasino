@@ -19,7 +19,7 @@ public class CardTypeDiscriminator {
         ccCard = cc;
         playerCard = pc;
     }
-    public void resetDiscriminator(int c){
+    public void resetDiscriminator(){
         for(int i = 0; i < 4; i++) {
             color_num[i] = 0;
         }

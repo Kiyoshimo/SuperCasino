@@ -36,7 +36,8 @@ public class wallet {
         if (winState) {
             walletMoney = walletMoney + turnAllBetMoney;
             turnMyBetMoney = 0;
-
+        }else{
+            turnMyBetMoney = 0;
         }
 
     }
