@@ -16,15 +16,17 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
     private Button btnFold,btnCheck,btnRaise;
-    private ImageView ivCC1,ivCC2,ivCC3,ivCC4,ivCC5,ivHC1,ivHC2 ;
+    private ImageView ivCC1,ivCC2,ivCC3,ivCC4,ivCC5,ivHC1,ivHC2;
+    private ImageView ivC1HC1, ivC1HC2;
     private TextView tvMm,tvTmm,tvTam;
     private TextView tvTurn, tvCheck, tvCardType, tvChange;
-
+    private TextView tvResult, tvTmp;
 
     private DeckController deckController;
     private int turn_number;
     private boolean all_check, result_flag;
     private ArrayList<String> playerCard;
+    private ArrayList<String> com1Card;
 
     //广播
     private PendingIntent pendingIntent;
@@ -61,6 +63,8 @@ public class MainActivity extends AppCompatActivity {
         ivCC5=(ImageView)findViewById(R.id.iv_cc5);
         ivHC1=(ImageView)findViewById(R.id.iv_h1);
         ivHC2=(ImageView)findViewById(R.id.iv_h2);
+        ivC1HC1=(ImageView)findViewById(R.id.iv_c1h1);
+        ivC1HC2=(ImageView)findViewById(R.id.iv_c1h2);
         //资金数据TextView们
         tvMm=(TextView) findViewById(R.id.tv_mm);
         tvTmm=(TextView) findViewById(R.id.tv_tmm);
@@ -70,10 +74,13 @@ public class MainActivity extends AppCompatActivity {
         tvTurn = (TextView) findViewById(R.id.tv_turn);
         tvCheck = (TextView) findViewById(R.id.tv_check);
         tvCardType = (TextView) findViewById(R.id.tv_cardtype);
+        tvResult = (TextView) findViewById(R.id.tv_result);
+        tvTmp = (TextView) findViewById(R.id.tv_tmp);
         //牌組控制器
         deckController = new DeckController();
         playerCard = new ArrayList<>();
         ccCard = new ArrayList<>();
+        com1Card = new ArrayList<>();
         ctd = new CardTypeDiscriminator();
         //錢包
         playerWallet=new wallet();
@@ -106,10 +113,22 @@ public class MainActivity extends AppCompatActivity {
         all_check = false;
         tvTurn.setText(String.valueOf(turn_number));
         tvCheck.setText(String.valueOf(all_check));
+        result_flag = false;
+        tvResult.setText("");
         playerCard.add(p1Card);
         playerCard.add(p2Card);
         ctd.resetDiscriminator();
         tvCardType.setText("");
+        tvTmp.setText("");
+        //重置對手的牌
+        imageResource = getResources().getIdentifier("@drawable/jb", null, getPackageName());
+        ivC1HC1.setImageResource(imageResource);
+        ivC1HC2.setImageResource(imageResource);
+        com1Card.clear();
+        String c11Card = deckController.drawCard();
+        String c12Card = deckController.drawCard();
+        com1Card.add(c11Card);
+        com1Card.add(c12Card);
 
         //金钱初始化
         bonusPool=0;
@@ -132,7 +151,7 @@ public class MainActivity extends AppCompatActivity {
                 turn_number += 1;
                 all_check = true;
                 tvCheck.setText(String.valueOf(all_check));
-            if(turn_number <= 3) {
+            if(turn_number <= 4) {
                 playerWallet.bet(10);//下注十块，测试用
                 bonusPool = bonusPool + 10;
             }
@@ -145,17 +164,21 @@ public class MainActivity extends AppCompatActivity {
                 turnStart(2);
             } else if (turn_number == 3) {
                 turnStart(3);
+                //最後一輪翻牌後即判斷勝負，錢也在此計算
+                //最後一次翻牌後經過最後一次下注才結算
+            }else if(turn_number == 4)  {
+                turnStart(4);
                 tvTam.setText(String.valueOf(bonusPool) + "元");
                 tvTmm.setText(String.valueOf(playerWallet.turnMyBetMoney) + "元");
                 tvMm.setText(String.valueOf(playerWallet.walletMoney) + "元");
-                //最後一輪翻牌後即判斷勝負，錢也在此計算
-                result_flag = true;
+                //result_flag = true;
                 playerWallet.winOrLose(bonusPool,result_flag);//输赢
                 if(result_flag)
                     tvChange.setText("+" + String.valueOf(bonusPool));
                 else
                     tvChange.setText("-" + String.valueOf(bonusPool));
-            } else {
+            }
+            else {
                 tvChange.setText("0");
                 resetGame();
             }
@@ -165,7 +188,7 @@ public class MainActivity extends AppCompatActivity {
         tvCheck.setText(String.valueOf(all_check));
         //playerWallet.bet(MyButtonRaise.M);//下注十块，测试用
         //bonusPool=bonusPool+MyButtonRaise.M;
-        if(turn_number != 3) {
+        if(turn_number != 4) {
             tvTam.setText(String.valueOf(bonusPool) + "元");
             tvTmm.setText(String.valueOf(playerWallet.turnMyBetMoney) + "元");
             tvMm.setText(String.valueOf(playerWallet.walletMoney) + "元");
@@ -175,7 +198,7 @@ public class MainActivity extends AppCompatActivity {
     public void ButtonFold(View view) {
         ButtonFold MyButtonFold=new ButtonFold();
         deckController.resetDeck();
-        if(turn_number < 3) {
+        if(turn_number < 4) {
             result_flag = false;
             tvChange.setText("-" + String.valueOf(bonusPool));
             playerWallet.winOrLose(bonusPool, result_flag);
@@ -202,7 +225,10 @@ public class MainActivity extends AppCompatActivity {
             } else if (turn_number == 3) {
                 turnStart(3);
                 //最後一輪翻牌後即判斷勝負，錢也在此計算
-                result_flag = true;
+                //最後一次翻牌後經過最後一次下注才結算
+            } else if (turn_number == 4) {
+                turnStart(4);
+                //result_flag = true;
                 playerWallet.winOrLose(bonusPool,result_flag);//输赢
                 if(result_flag)
                     tvChange.setText("+" + String.valueOf(bonusPool));
@@ -251,9 +277,39 @@ public class MainActivity extends AppCompatActivity {
                 imageResource = getResources().getIdentifier(connect, null, getPackageName());
                 ivCC5.setImageResource(imageResource);
                 ccCard.add(cc5Card);
-                ctd.setCard(ccCard,playerCard);
-                String result = ctd.discriminate();
-                tvCardType.setText(result);
+            }else if(tn == 4){
+                //最後一輪下注完後才翻對手的牌與結算結果
+                String connect = "@drawable/" + com1Card.get(0);
+                imageResource = getResources().getIdentifier(connect, null, getPackageName());
+                ivC1HC1.setImageResource(imageResource);
+                connect = "@drawable/" + com1Card.get(1);
+                imageResource = getResources().getIdentifier(connect, null, getPackageName());
+                ivC1HC2.setImageResource(imageResource);
+                //最後結算牌型與結果
+                ctd.setCard(ccCard, playerCard);
+                ctd.setAllCard(ccCard);
+                ctd.setComCard(com1Card);
+                String playerCardType = ctd.discriminate();
+                tvCardType.setText(playerCardType);
+                int result = ctd.discriminateWithCom();
+                int[] tmp = ctd.getStr();
+                ArrayList<String> tmp_card = ctd.getAllCard();
+                tvTmp.setText(String.valueOf(ctd.getSize()));
+                /*tvTmp.setText(tmp_card.get(0) + tmp_card.get(1) + tmp_card.get(2) + tmp_card.get(3)
+                                + tmp_card.get(4) + tmp_card.get(5) + tmp_card.get(6) + tmp_card.get(7)
+                               + tmp_card.get(8));*/
+                if(result == 2){
+                    tvResult.setText("Win! " + String.valueOf(tmp[0]) + " P and C " + String.valueOf(tmp[1]));
+                    result_flag = true;
+                    //tvCheck.setText(String.valueOf(tmp[0]) + "P and C " + String.valueOf(tmp[1]));
+                }else if(result == 1){
+                    tvResult.setText("Draw! " + String.valueOf(tmp[0]) + " P and C " + String.valueOf(tmp[1]));
+                    //tvCheck.setText(String.valueOf(tmp[0]) + "P and C " + String.valueOf(tmp[1]));
+                }else{
+                    tvResult.setText("Lose! " + String.valueOf(tmp[0]) + " P and C " + String.valueOf(tmp[1]));
+                    result_flag = false;
+                    //tvCheck.setText(String.valueOf(tmp[0]) + "P and C " + String.valueOf(tmp[1]));
+                }
             }else{
 
             }
