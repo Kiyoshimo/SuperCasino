@@ -10,12 +10,21 @@ import android.widget.EditText;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.app.Service;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.os.IBinder;
+import android.widget.Toast;
 
 public class ButtonRaise {
 
     public Context brContext;
     public int M;
     public boolean btnS;
+
+
 
     //要把那个啥穿进去
     public void getContext(Context bContext) {
@@ -68,10 +77,14 @@ public class ButtonRaise {
         });
 
         //按钮监听
+
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 btnS = true;
+
+
+
                 Toast.makeText(brContext, "下注！" + String.valueOf(btnS), Toast.LENGTH_SHORT).show();
                 alertDialog.dismiss();// 对话框消失
             }
