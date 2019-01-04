@@ -11,4 +11,5 @@
     <string name="btn_fold">弃牌</string>
     <string name="unit">元</string>
     <string name="help">棄牌：放棄手中的牌，不玩該局牌。蓋牌後，你就無法贏得底池獎金，也不可取回投入底池的籌碼，包括盲注. \n 看牌：不下注，選擇下 一輪再看一張牌. \n 加註：指下注的金額較前一位玩家的下注金額高。如果您之前沒有玩家加註，您可以自己加註。</string>
+    <string name="todo">TODO</string>
 </resources>

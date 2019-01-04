@@ -22,11 +22,12 @@
         app:layout_constraintVertical_bias="0.926" />
 
     <ImageView
-        android:id="@+id/imageView3"
+        android:id="@+id/iv_cat"
         android:layout_width="289dp"
         android:layout_height="309dp"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
+        android:background="@drawable/help"
         app:layout_constraintBottom_toTopOf="@+id/textView6"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
