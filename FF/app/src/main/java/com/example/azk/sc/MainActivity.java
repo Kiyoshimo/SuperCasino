@@ -1,5 +1,8 @@
 package com.example.azk.sc;
 
+import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -7,7 +10,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
+import android.content.Intent;
 import java.util.ArrayList;
 
 
@@ -23,17 +26,26 @@ public class MainActivity extends AppCompatActivity {
     private boolean all_check, result_flag;
     private ArrayList<String> playerCard;
 
+    //广播
+    private PendingIntent pendingIntent;
+    private Context context;
+    private String CONTENT = "HELLO MY MESSAGE",PHONENUMBER="0978550131";
+
+    //广播
     ArrayList<String> ccCard;
     CardTypeDiscriminator ctd;
 
     public wallet playerWallet;//玩家钱包
     public  int bonusPool;//每轮奖金池
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         init();
     }
+
 
     //初始化
     protected void init(){
@@ -104,6 +116,10 @@ public class MainActivity extends AppCompatActivity {
         tvTam.setText(String.valueOf(bonusPool));
         tvTmm.setText(String.valueOf(playerWallet.turnMyBetMoney)+"元");
         tvMm.setText(String.valueOf(playerWallet.walletMoney)+"元");
+    }
+
+    interface myListener{
+        public void refreshActivity(String text);
     }
 
     //下注按钮ButtonRaise[android:onClick="ButtonRaise"]
@@ -242,7 +258,11 @@ public class MainActivity extends AppCompatActivity {
 
             }
         }
+
+
     }
+
+
 
 
 
